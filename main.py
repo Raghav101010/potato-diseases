@@ -5,6 +5,7 @@ import numpy as np
 from io import BytesIO
 from PIL import Image
 import tensorflow as tf
+from pathlib import Path
 import os
 
 app = FastAPI()
@@ -18,8 +19,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# MODEL = tf.keras.models.load_model("model")
-MODEL = tf.keras.layers.TFSMLayer("model", call_endpoint="serving_default")
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = BASE_DIR / "model"
+
+MODEL = tf.keras.layers.TFSMLayer(MODEL_PATH, call_endpoint="serving_default")
 CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
 
 @app.get("/ping")
