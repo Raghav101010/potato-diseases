@@ -10,10 +10,14 @@ import os
 
 app = FastAPI()
 
+@app.get("/")
+async def health_check():
+    return {"status": "API running"}
+
 # Enable CORS so your React frontend can call this API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # For production, replace "*" with your React app URL, e.g., "https://my-ui.vercel.app"
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -55,5 +59,5 @@ async def predict(file: UploadFile = File(...)):
     }
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))  # Render assigns PORT dynamically
+    port = int(os.environ.get("PORT", 8000))  
     uvicorn.run(app, host="0.0.0.0", port=port, reload=True)
