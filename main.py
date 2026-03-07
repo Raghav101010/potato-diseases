@@ -17,7 +17,8 @@ async def health_check():
 # Enable CORS so your React frontend can call this API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://potato-diseases-react-app1.vercel.app"],  
+    allow_origins=["http://localhost:3000",
+                   "https://potato-diseases-react-app1.vercel.app"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
