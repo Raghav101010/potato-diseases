@@ -22,7 +22,7 @@ app.add_middleware(
 BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = BASE_DIR / "model"
 
-MODEL = tf.keras.layers.TFSMLayer(MODEL_PATH, call_endpoint="serving_default")
+MODEL = tf.keras.models.load_model(MODEL_PATH)
 CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
 
 @app.get("/ping")
@@ -43,9 +43,7 @@ async def predict(file: UploadFile = File(...)):
     img_batch = np.expand_dims(image, 0)
     
     # Run prediction
-    prediction = MODEL(img_batch)
-    prediction = list(prediction.values())[0]
-    prediction = np.array(prediction)
+    prediction = MODEL.predict(img_batch)
     
     index = np.argmax(prediction[0])
     predicted_class = CLASS_NAMES[index]
